@@ -40,6 +40,14 @@ export const loadFrame = (url: string) => new Promise<HTMLImageElement>((resolve
   image.src = url
 })
 
+export const loadFrameWithRetry = async (url: string, retries = 1) => {
+  let lastError: unknown
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    try { return await loadFrame(url) } catch (error) { lastError = error }
+  }
+  throw lastError instanceof Error ? lastError : new Error('Frame unavailable')
+}
+
 export const nearestReadyFrame = (requested: number, frames: string[], radius = frames.length) => {
   const limit = Math.min(frames.length, radius * 2 + 1)
   for (const frame of nearestFrameOrder(requested, frames.length).slice(0, limit)) {
