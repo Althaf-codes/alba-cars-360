@@ -1,0 +1,31 @@
+# Dependencies and generated production output
+node_modules/
+dist/
+.pnpm-store/
+coverage/
+
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+
+# Offline Blender source assets and generated render work
+*.blend
+*.blend1
+*.blend2
+tools/porsche360-render/input/
+tools/porsche360-render/output/
+*.log
+
+# Tooling caches and temporary files
+.cache/
+.vite/
+*.tsbuildinfo
+__pycache__/
+*.py[cod]
+
+# Operating system and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

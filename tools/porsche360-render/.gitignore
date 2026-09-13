@@ -1,0 +1,12 @@
+# Licensed source assets and downloaded textures must never be committed.
+input/*
+!input/.gitkeep
+
+# Cloud render output is reviewed before any selected WebPs are copied elsewhere.
+output/*
+!output/.gitkeep
+
+# Never keep credentials or session material in this toolkit.
+.env
+credentials/
+*.blend1
