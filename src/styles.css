@@ -34,7 +34,7 @@
 /* 360 startup readiness feedback; the base viewer remains unchanged. */
 .viewer-loader{opacity:1;transition:opacity .2s ease}
 .viewer-loader.is-fading{opacity:0;pointer-events:none}
-.viewer-loader small{display:block;color:#9eabb1;font-size:11px;font-weight:600;letter-spacing:.1px}
+.viewer-loader-ring{width:48px!important;height:48px!important;margin:auto;border:0!important;border-radius:50%;background:conic-gradient(from 20deg,#ff6573,#ff9aa3 24%,rgba(218,230,233,.2) 42%,rgba(218,230,233,.08) 100%)!important;-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 0);mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 0);box-shadow:0 0 0 7px rgba(9,16,20,.35),0 10px 30px rgba(0,0,0,.25);animation:spin .9s linear infinite!important}.viewer-loader p{margin:0;color:#e3eaec;font-size:12px;font-weight:700;letter-spacing:.35px}
 .viewer-view-loading,.viewer-view-warning{position:absolute;z-index:3;right:26px;bottom:20px;border:1px solid rgba(203,215,218,.25);border-radius:999px;background:rgba(8,15,19,.68);backdrop-filter:blur(10px);color:#dce5e8;padding:8px 11px;font-size:11px;font-weight:700}
 .viewer-view-warning{color:#ffc7cd}
 @media(max-width:700px){.viewer-view-loading,.viewer-view-warning{right:14px;bottom:14px}}

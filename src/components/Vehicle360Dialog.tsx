@@ -26,7 +26,6 @@ export default function Vehicle360Dialog({ vehicle, media, trigger, onClose }: P
   const pendingFrameRef = useRef<string | null>(null)
   const [startupPreparing, setStartupPreparing] = useState(true)
   const [startupFading, setStartupFading] = useState(false)
-  const [startupProgress, setStartupProgress] = useState({ normalReady: 0, normalFailed: 0 })
   const [interactionReady, setInteractionReady] = useState(false)
   const [viewLoading, setViewLoading] = useState(false)
   const [startupWarning, setStartupWarning] = useState(false)
@@ -99,7 +98,6 @@ export default function Vehicle360Dialog({ vehicle, media, trigger, onClose }: P
     const updateStartupProgress = () => {
       const normalReady = normalFrames.filter((url) => getFrameStatus(url) === 'ready').length
       const normalFailed = normalFrames.filter((url) => getFrameStatus(url) === 'failed').length
-      if (activeRef.current) setStartupProgress({ normalReady, normalFailed })
       return { normalReady, normalFailed }
     }
     const completeStartup = (normalReady: number, normalFailed: number) => {
@@ -184,11 +182,10 @@ export default function Vehicle360Dialog({ vehicle, media, trigger, onClose }: P
     gesture.zoom = clamp(gesture.zoom * (event.deltaY < 0 ? 1.12 : .89), 1, 2.8); applyTransform(); setZoomed(gesture.zoom > 1.01)
   }
 
-  const loadingLabel = startupPreparing ? `Preparing 360° · ${startupProgress.normalReady}/${media.azimuthFrameCount}` : null
 
   return <div className="viewer-overlay" role="presentation"><div className="viewer-dialog" role="dialog" aria-modal="true" aria-label={viewerTitle} tabIndex={-1} ref={dialogRef} onKeyDown={onKeyDown}>
     <header className="viewer-header"><div><p>{vehicle.make} {vehicle.model} {vehicle.variant}</p><h2>{viewerTitle}</h2></div><button className="viewer-exit" onClick={onClose} aria-label="Exit exterior 360 degree view"><X size={20}/><span>Exit</span></button></header>
-    <main className="viewer-stage" ref={stageRef} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerEnd} onPointerCancel={onPointerEnd} onWheel={onWheel} onDoubleClick={() => { if (interactionReadyRef.current) resetView() }}><img ref={imageRef} src={resolved.poster} alt="Independently rendered Porsche exterior demonstration" draggable={false}/>{zoomed && <button className="viewer-reset" onClick={resetView} aria-label="Reset zoom and position"><RotateCcw size={16}/> Reset view</button>}{startupPreparing && <div className={`viewer-loader${startupFading ? ' is-fading' : ''}`} role="status" aria-label="Preparing 360 degree view"><span/><p>Preparing 360° view</p><small aria-hidden="true">{startupProgress.normalReady} / {media.azimuthFrameCount} views ready</small></div>}{viewLoading && interactionReady && <span className="viewer-view-loading" role="status">Loading view…</span>}{startupWarning && interactionReady && <span className="viewer-view-warning" role="status">Some views are unavailable.</span>}{unavailable && <div className="viewer-error"><strong>360° view is currently unavailable.</strong><span>Browse the normal photos instead.</span><button onClick={onClose}>Return to gallery</button></div>}</main>
-    <footer className="viewer-footer"><span className="viewer-instruction"><ArrowLeft size={15}/><Rotate3D size={18}/><ArrowRight size={15}/><b className="desktop-copy">Drag to rotate · drag vertically to change view · scroll to zoom</b><b className="mobile-copy">Swipe to rotate · drag vertically to change view · pinch to zoom</b></span><span className="viewer-progress" aria-live={startupPreparing ? 'off' : 'polite'}>{loadingLabel ? <span>{loadingLabel}</span> : <i>{displayedFrame + 1} / {media.azimuthFrameCount}</i>}</span></footer>
+    <main className="viewer-stage" ref={stageRef} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerEnd} onPointerCancel={onPointerEnd} onWheel={onWheel} onDoubleClick={() => { if (interactionReadyRef.current) resetView() }}><img ref={imageRef} src={resolved.poster} alt="Independently rendered Porsche exterior demonstration" draggable={false}/>{zoomed && <button className="viewer-reset" onClick={resetView} aria-label="Reset zoom and position"><RotateCcw size={16}/> Reset view</button>}{startupPreparing && <div className={`viewer-loader${startupFading ? ' is-fading' : ''}`} role="status" aria-label="Preparing 360 degree view"><span className="viewer-loader-ring" aria-hidden="true"/><p>Preparing 360° view</p></div>}{viewLoading && interactionReady && <span className="viewer-view-loading" role="status">Loading view…</span>}{startupWarning && interactionReady && <span className="viewer-view-warning" role="status">Some views are unavailable.</span>}{unavailable && <div className="viewer-error"><strong>360° view is currently unavailable.</strong><span>Browse the normal photos instead.</span><button onClick={onClose}>Return to gallery</button></div>}</main>
+    <footer className="viewer-footer"><span className="viewer-instruction"><ArrowLeft size={15}/><Rotate3D size={18}/><ArrowRight size={15}/><b className="desktop-copy">Drag to rotate · drag vertically to change view · scroll to zoom</b><b className="mobile-copy">Swipe to rotate · drag vertically to change view · pinch to zoom</b></span><span className="viewer-progress" aria-live="polite">{!startupPreparing && <i>{displayedFrame + 1} / {media.azimuthFrameCount}</i>}</span></footer>
   </div></div>
 }
